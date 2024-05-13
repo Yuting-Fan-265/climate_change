@@ -1,0 +1,93 @@
+---
+title: "About"
+date: "May, 2024"
+format:
+    html: 
+      self-contained: true
+      grid: 
+        margin-width: 300px
+        body-width: 800px
+        sidebar-width: 200px
+      code-fold: true
+      embed-resources: true
+editor_options: 
+  chunk_output_type: console
+execute: 
+  echo: fenced
+reference-location: margin
+citation-location: margin
+---
+
+# dfs
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+
+# Data Ingestion and Munging
+# import libraries
+import pandas as pd
+
+# load the data
+his = pd.read_csv("../Data Set/NABR_historic.csv")
+
+# select the historic data
+his_a = his[['long', 'lat', 'year', 'TimePeriod', 'RCP', 'scenario', 'treecanopy',
+       'Ann_Herb', 'Bare', 'Herb', 'Litter', 'Shrub',
+       'DrySoilDays_Summer_whole', 'Evap_Summer',
+       'ExtremeShortTermDryStress_Summer_whole', 'FrostDays_Winter',
+       'NonDrySWA_Summer_whole', 'Tmin_Winter',
+       'VWC_Winter_whole', 'VWC_Spring_whole', 'VWC_Summer_whole',
+       'VWC_Fall_whole']]
+his_a.drop_duplicates(inplace=True)
+his_a.dropna(subset=['Evap_Summer'], inplace=True)
+
+his_b = his[['long', 'lat', 'year', 'TimePeriod', 'RCP', 'scenario', 'treecanopy',
+       'Ann_Herb', 'Bare', 'Herb', 'Litter', 'Shrub',
+       'PPT_Winter', 'PPT_Summer', 
+       'T_Winter', 'T_Summer',  'Tmax_Summer']]
+his_b.drop_duplicates(inplace=True)
+his_b.dropna(subset=['PPT_Winter'], inplace=True)
+
+his = pd.merge(his_a, his_b, on=['long', 'lat', 'year', 'TimePeriod', 'RCP', 'scenario', 'treecanopy',
+       'Ann_Herb', 'Bare', 'Herb', 'Litter', 'Shrub'], how='inner')
+
+
+# load the data
+nt = pd.read_csv("../Data Set/nearterm_data_2020-2024.csv")
+nt = nt[nt['scenario']=='sc22']
+
+# select the nearterm data
+nt_a = nt[['long', 'lat', 'year', 'TimePeriod', 'RCP', 'scenario', 'treecanopy',
+       'Ann_Herb', 'Bare', 'Herb', 'Litter', 'Shrub',
+       'DrySoilDays_Summer_whole', 'Evap_Summer',
+       'ExtremeShortTermDryStress_Summer_whole', 'FrostDays_Winter',
+       'NonDrySWA_Summer_whole', 'Tmin_Winter',
+       'VWC_Winter_whole', 'VWC_Spring_whole', 'VWC_Summer_whole',
+       'VWC_Fall_whole']]
+nt_a.drop_duplicates(inplace=True)
+nt_a.dropna(subset=['Evap_Summer'], inplace=True)
+
+nt_b = nt[['long', 'lat', 'year', 'TimePeriod', 'RCP', 'scenario', 'treecanopy',
+       'Ann_Herb', 'Bare', 'Herb', 'Litter', 'Shrub',
+       'PPT_Winter', 'PPT_Summer', 
+       'T_Winter', 'T_Summer',  'Tmax_Summer']]
+nt_b.drop_duplicates(inplace=True)
+nt_b.dropna(subset=['PPT_Winter'], inplace=True)
+
+nt = pd.merge(nt_a, nt_b, on=['long', 'lat', 'year', 'TimePeriod', 'RCP', 'scenario', 'treecanopy',
+       'Ann_Herb', 'Bare', 'Herb', 'Litter', 'Shrub'], how='inner')
+
+# combine data
+data = pd.concat([his, nt], axis=0)
+data.sort_values(by=['long','lat','year'], inplace=True)
+data.reset_index(drop=True, inplace=True)
+data.to_csv("data.csv")
+```
+
+## sdfsdf
+
+
+
+
+
