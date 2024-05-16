@@ -431,7 +431,7 @@ fig.update_layout(
         )
     ])
      
-# Set title
+# Set title and layout
 fig.update_layout(title_text="<b> Yearly Temperature Trends at Natural Bridges National Monument (NBNM)", title_x=0.5, title_font=dict(size=20, family="Sen", color="#38A7BB"),
     xaxis_title="<b>Year", 
     xaxis=dict(title_font=dict(size=15, family="Sen", color="#38A7BB")),
@@ -465,7 +465,7 @@ fig.show()
 
 ```{python}
 #| label: fig-plot8
-#| fig-cap: " of Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| fig-cap: "Precipitation(Summer & Winter) at Natural Bridges National Monument (NBNM) <br> Data Source: US Geological Survey (USGS)"  
 #| warning: false 
 #| echo: false
 #| message: false
@@ -474,7 +474,7 @@ fig.show()
 import plotly.graph_objects as go 
 import plotly.io as pio
 
-# select the temperature data
+# select the precipitation data
 data2 = round(data.groupby('year')['PPT_Winter'].mean(),2).reset_index()
 data2['PPT_Summer'] = round(data.groupby('year')['PPT_Summer'].mean(),2).reset_index()['PPT_Summer']
 data2['PPT_Total'] = [sum(row) for row in zip(data2['PPT_Winter'], data2['PPT_Summer'])]
@@ -509,8 +509,8 @@ fig8.add_trace(
                hovertext=["Total: {:.2f}".format(val) for val in data2.PPT_Total],
                line=dict(color="#38A7BB", dash="dash")))
 
-# Set title
-fig8.update_layout(title_text="<b> Precipitation(Summer&Winter) at Natural Bridges National Monument (NBNM)", title_x=0.5, title_font=dict(size=20, family="Sen", color="#38A7BB"),
+# Set title and layout
+fig8.update_layout(title_text="<b> Precipitation(Summer & Winter) at Natural Bridges National Monument (NBNM)", title_x=0.5, title_font=dict(size=20, family="Sen", color="#38A7BB"),
     xaxis_title="<b>Year", 
     xaxis=dict(title_font=dict(size=15, family="Sen", color="#38A7BB")),
     yaxis_title="<b>Centimeters",
@@ -588,7 +588,7 @@ fig8.show()
 ```
 
 
-# soil water availibility
+# volumetric water content
 
 ::: {.callout-tip}
 ## Chart Navigation Tips
@@ -599,13 +599,68 @@ fig8.show()
 - **Annotations:** Each category's average and maximum expenditure values.
 :::
 
+:::: {.columns}
+::: {.column width="60%"}
 ```{python}
 #| label: fig-plot11
-#| fig-cap: " of Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| fig-cap: "Volumetric Water Content at Natural Bridges National Monument (NBNM) <br> Data Source: US Geological Survey (USGS)"  
 #| warning: false 
 #| echo: false
 #| message: false
 
 # import libraries
+import plotly.graph_objects as go 
+import plotly.io as pio
+import plotly.express as px
 
+# select the VWC data
+data3 = round(data.groupby('year')['VWC_Spring_whole'].mean(),2).reset_index()
+data3['Summer'] = round(data.groupby('year')['VWC_Summer_whole'].mean(),2).reset_index()['VWC_Summer_whole']
+data3['Fall'] = round(data.groupby('year')['VWC_Fall_whole'].mean(),2).reset_index()['VWC_Fall_whole']
+data3['Winter'] = round(data.groupby('year')['VWC_Winter_whole'].mean(),2).reset_index()['VWC_Winter_whole']
+data3.rename(columns={'VWC_Spring_whole':'Spring', 'year':'Year'}, inplace=True)
+data3_long = data3.melt(id_vars='Year', var_name='Season', value_name='Value')
+
+# create the radar plot
+fig9 = px.line_polar(data3_long, r='Value', theta='Season', line_close=True, text = 'Value', color_discrete_sequence = ['#38A7BB'], animation_frame="Year")
+fig9.update_traces(fill='toself')
+
+# set title and layout
+fig9.update_layout(title_text="<b> Seasonal VMC at NBNM", title_x=0.5, title_font=dict(size=20, family="Sen", color="#38A7BB"),
+    template="plotly_white")
+
+fig9.show()
 ```
+
+:::
+
+::: {.column width="40%"}
+```{python}
+#| warning: false 
+#| echo: false
+#| message: false
+
+data3['VWC_Total'] = [sum(row) for row in zip(data3['Spring'],data3['Summer'],data3['Winter'],data3['Fall'])]
+
+# create the line plot
+# Add Traces
+fig10 = go.Figure()
+fig10.add_trace(
+    go.Scatter(x=data3.Year,
+               y=data3.VWC_Total,
+               name="Total",
+               mode='lines+markers',
+               line=dict(color='#38A7BB'),
+               marker=dict(symbol='triangle-down')))
+
+fig10.update_layout(title_text="<b> Yearly VMC at NBNM", title_x=0.5, title_font=dict(size=20, family="Sen", color="#38A7BB"),
+    xaxis_title="<b>Year", 
+    xaxis=dict(title_font=dict(size=15, family="Sen", color="#38A7BB")),
+    yaxis_title="<b>Median Volumetric Water content in m^3",
+    yaxis=dict(title_font=dict(size=15, family="Sen", color="#38A7BB")),
+    template="plotly_white")
+fig10.show()
+```
+
+:::
+::::
