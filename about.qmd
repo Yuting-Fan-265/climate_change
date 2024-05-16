@@ -5,9 +5,9 @@ format:
     html: 
       self-contained: true
       grid: 
-        margin-width: 300px
-        body-width: 800px
-        sidebar-width: 200px
+        margin-width: 50px
+        body-width: 1000px
+        sidebar-width: 250px
       code-fold: true
       embed-resources: true
 editor_options: 
@@ -18,7 +18,6 @@ reference-location: margin
 citation-location: margin
 ---
 
-# dfs
 ```{python}
 #| echo: false
 #| warning: false
@@ -27,6 +26,7 @@ citation-location: margin
 # Data Ingestion and Munging
 # import libraries
 import pandas as pd
+import plotly.express as px
 
 # load the data
 his = pd.read_csv("../Data Set/NABR_historic.csv")
@@ -82,12 +82,505 @@ nt = pd.merge(nt_a, nt_b, on=['long', 'lat', 'year', 'TimePeriod', 'RCP', 'scena
 data = pd.concat([his, nt], axis=0)
 data.sort_values(by=['long','lat','year'], inplace=True)
 data.reset_index(drop=True, inplace=True)
-data.to_csv("data.csv")
+
 ```
 
-## sdfsdf
+# Vegetation Resilience
+
+::: {.callout-tip}
+## Chart Navigation Tips
+- **Color-Coded Index:** The spectrum of colors on the map indicates the magnitude of change in motor fuel tax collection, with brighter red colors denoting positive changes and brighter blue colors indicating negative changes. 
+- **Size-Coded Index:** The spectrum 
+- **Tooltip:** Hover over any state on the map to see the exact percentage change in motor fuel tax collection for that location.
+:::
+
+::: {.panel-tabset}
+
+## Bare Ground
+```{python}
+#| label: fig-plot3
+#| fig-cap: "Percentage of Bare Ground of Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| warning: false 
+#| echo: false
+#| message: false
+
+# import libraries
+import plotly.express as px
+
+# Create a Choropleth Map
+fig3 = px.scatter_mapbox(data, 
+                     lon='long', 
+                     lat='lat', 
+                     color='Bare',
+                     size='Bare',
+                     size_max=14,
+                     zoom=11.3,
+                     color_continuous_scale=px.colors.sequential.GnBu)
+
+# Customize the Map
+fig3.update_layout(mapbox_style="open-street-map")
+fig3.update_layout(title='<b>Percentage of Bare Ground of NBNM', title_x=0.5, title_font=dict(size=23, family="Sen", color="#38A7BB"),
+coloraxis_colorbar=dict(title="Bare Ground(%)", title_font=dict(size=12,color="#333333",family="Sen")))
+
+
+#Show the Map
+fig3.show()
+```
+
+## Tree Canopy
+```{python}
+#| label: fig-plot1
+#| fig-cap: "Percentage of Tree Canopy Coverage of Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| warning: false 
+#| echo: false
+#| message: false
+
+# import libraries
+import plotly.express as px
+
+# Create a Choropleth Map
+fig1 = px.scatter_mapbox(data, 
+                     lon='long', 
+                     lat='lat', 
+                     color='treecanopy',
+                     size='treecanopy',
+                     size_max=14,
+                     zoom=11,
+                     color_continuous_scale=px.colors.sequential.GnBu)
+
+# Customize the Map
+fig1.update_layout(mapbox_style="open-street-map", width=950)
+fig1.update_layout(title='<b>Percentage of Tree Canopy Coverage of NBNM', title_x=0.5, title_font=dict(size=23, family="Sen", color="#38A7BB"),
+coloraxis_colorbar=dict(title="Tree canopy(%)", title_font=dict(size=12,color="#333333",family="Sen")))
+
+
+#Show the Map
+fig1.show()
+```
+
+## Plant Litter
+```{python}
+#| label: fig-plot5
+#| fig-cap: "Percentage of Plant Litter Coverage of Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| warning: false 
+#| echo: false
+#| message: false
+
+# import libraries
+import plotly.express as px
+
+# Create a Choropleth Map
+fig5 = px.scatter_mapbox(data, 
+                     lon='long', 
+                     lat='lat', 
+                     color='Litter',
+                     size='Litter',
+                     size_max=14,
+                     zoom=11,
+                     color_continuous_scale=px.colors.sequential.GnBu)
+
+# Customize the Map
+fig5.update_layout(mapbox_style="open-street-map", width=950)
+fig5.update_layout(title='<b>Percentage of Plant Litter Coverage of NBNM', title_x=0.5, title_font=dict(size=23, family="Sen", color="#38A7BB"),
+coloraxis_colorbar=dict(title="Plant Litter(%)", title_font=dict(size=12,color="#333333",family="Sen")))
+
+
+#Show the Map
+fig5.show()
+```
+
+## Shrubs
+```{python}
+#| label: fig-plot6
+#| fig-cap: "Percentage of Shrubs Coverage of Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| warning: false 
+#| echo: false
+#| message: false
+
+# import libraries
+import plotly.express as px
+
+# Create a Choropleth Map
+fig6 = px.scatter_mapbox(data, 
+                     lon='long', 
+                     lat='lat', 
+                     color='Shrub',
+                     size='Shrub',
+                     size_max=14,
+                     zoom=11,
+                     color_continuous_scale=px.colors.sequential.GnBu)
+
+# Customize the Map
+fig6.update_layout(mapbox_style="open-street-map", width=950)
+fig6.update_layout(title='<b>Percentage of Shrubs Coverage of NBNM', title_x=0.5, title_font=dict(size=23, family="Sen", color="#38A7BB"),
+coloraxis_colorbar=dict(title="Shrub(%)", title_font=dict(size=12,color="#333333",family="Sen")))
+
+
+#Show the Map
+fig6.show()
+```
+
+## Herbaceous Plants
+```{python}
+#| label: fig-plot4
+#| fig-cap: "Percentage of Herbaceous Plants Coverage of Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| warning: false 
+#| echo: false
+#| message: false
+
+# import libraries
+import plotly.express as px
+
+# Create a Choropleth Map
+fig4 = px.scatter_mapbox(data, 
+                     lon='long', 
+                     lat='lat', 
+                     color='Herb',
+                     size='Herb',
+                     size_max=14,
+                     zoom=11,
+                     color_continuous_scale=px.colors.sequential.GnBu)
+
+# Customize the Map
+fig4.update_layout(mapbox_style="open-street-map", width=950)
+fig4.update_layout(title='<b>Percentage of Herbaceous Plants Coverage of NBNM', title_x=0.5, title_font=dict(size=23, family="Sen", color="#38A7BB"),
+coloraxis_colorbar=dict(title="Herbaceous Plants(%)", title_font=dict(size=12,color="#333333",family="Sen")))
+
+
+#Show the Map
+fig4.show()
+```
+
+## Annual Herbaceous
+```{python}
+#| label: fig-plot2
+#| fig-cap: "Percentage of Annual Herbaceous Coverage of Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| warning: false 
+#| echo: false
+#| message: false
+
+# import libraries
+import plotly.express as px
+
+# Create a Choropleth Map
+fig2 = px.scatter_mapbox(data, 
+                     lon='long', 
+                     lat='lat', 
+                     color='Ann_Herb',
+                     size='Ann_Herb',
+                     size_max=14,
+                     zoom=11,
+                     color_continuous_scale=px.colors.sequential.GnBu)
+
+# Customize the Map
+fig2.update_layout(mapbox_style="open-street-map", width=950)
+fig2.update_layout(title='<b>Percentage of Annual Herbaceous Coverage of NBNM', title_x=0.5, title_font=dict(size=23, family="Sen", color="#38A7BB"),
+coloraxis_colorbar=dict(title="Annual Herbaceous(%)", title_font=dict(size=12,color="#333333",family="Sen")))
+
+
+#Show the Map
+fig2.show()
+```
+
+:::
+
+# Temperatrue
+
+::: {.callout-tip}
+## Chart Navigation Tips
+- **Division Filtering:** Choose one of seven expenditure divisions from the dropdown menu.
+- **Commodity Filtering:** Click commodity names in the legend to filter for specific commodities within a division.
+- **Time Filtering:** Drag across the visualization to filter for a specific time range.
+- **Tooltip:** Hover over the visualization to observe the value for each data point.
+- **Annotations:** Each category's average and maximum expenditure values.
+:::
+
+```{python}
+#| label: fig-plot7
+#| fig-cap: "Yearly Temperature Trends at Natural Bridges National Monument (NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| warning: false 
+#| echo: false
+#| message: false
+
+# import libraries
+import plotly.graph_objects as go 
+import plotly.io as pio
+
+
+# select the temperature data
+data1 = round(data.groupby('year')['T_Winter'].mean(),2).reset_index()
+data1['Tmin_winter'] = round(data.groupby('year')['Tmin_Winter'].mean(),2).reset_index()['Tmin_Winter']
+data1['T_summer'] = round(data.groupby('year')['T_Summer'].mean(),2).reset_index()['T_Summer']
+data1['Tmax_summer'] = round(data.groupby('year')['Tmax_Summer'].mean(),2).reset_index()['Tmax_Summer']
+
+# create the line plot
+# Initialize figure
+fig = go.Figure()
+
+# Add Traces
+fig.add_trace(
+    go.Scatter(x=data1.year,
+               y=data1.T_Winter,
+               name="Winter Average Temperature",
+               mode='lines+markers',
+               line=dict(color="#33CFA5"),
+               marker=dict(symbol='triangle-down')))
+fig.add_trace(
+    go.Scatter(x=list(data1.year),
+               y=[data1.T_Winter.mean()] * len(data1.index),
+               name="Yearly Average",
+               visible=False,
+               line=dict(color="#38A7BB", dash="dash")))
+
+fig.add_trace(
+    go.Scatter(x=data1.year,
+               y=data1.Tmin_winter,
+               name="Winter Minimum Temperature",
+               mode='lines+markers',
+               line=dict(color="darkgreen"),
+               marker=dict(symbol='circle')))
+fig.add_trace(
+    go.Scatter(x=list(data1.year),
+               y=[data1.Tmin_winter.mean()] * len(data1.index),
+               name="Yearly Average",
+               visible=False,
+               line=dict(color="#38A7BB", dash="dash")))
+
+fig.add_trace(
+    go.Scatter(x=data1.year,
+               y=data1.T_summer,
+               name="Summer Average Temperature",
+               mode='lines+markers',
+               line=dict(color="#ff7f0e"),
+               marker=dict(symbol='square')))
+fig.add_trace(
+    go.Scatter(x=list(data1.year),
+               y=[data1.T_summer.mean()] * len(data1.index),
+               name="Yearly Average",
+               visible=False,
+               line=dict(color="#38A7BB", dash="dash")))
+
+fig.add_trace(
+    go.Scatter(x=data1.year,
+               y=data1.Tmax_summer,
+               name="Summer Maximum Temperature",
+               mode='lines+markers',
+               line=dict(color="red"),
+               marker=dict(symbol='diamond')))
+
+fig.add_trace(
+    go.Scatter(x=list(data1.year),
+               y=[data1.Tmax_summer.mean()] * len(data1.index),
+               name="Yearly Average",
+               visible=False,
+               line=dict(color="#38A7BB", dash="dash")))
+
+# Add Annotations and Buttons
+w_annotations = [dict(x="2000",
+                         y=data1.T_Winter.mean(),
+                         xref="x", yref="y",
+                         text="Yearly Average:<br> %.2f" % data1.T_Winter.mean(),
+                         ax=0, ay=-120)]
+wmin_annotations = [dict(x="2000",
+                         y=data1.Tmin_winter.mean(),
+                         xref="x", yref="y",
+                         text="Yearly Average:<br> %.2f" % data1.Tmin_winter.mean(),
+                         ax=0, ay=-120)]
+s_annotations = [dict(x="2000",
+                         y=data1.T_summer.mean(),
+                         xref="x", yref="y",
+                         text="Yearly Average:<br> %.2f" % data1.T_summer.mean(),
+                         ax=0, ay=-120)]
+smax_annotations = [dict(x="2000",
+                         y=data1.Tmax_summer.mean(),
+                         xref="x", yref="y",
+                         text="Yearly Average:<br> %.2f" % data1.Tmax_summer.mean(),
+                         ax=0, ay=-120)]
+
+fig.update_layout(
+    updatemenus=[
+        dict(
+            active=0,
+            buttons=list([
+                dict(label="Choose",
+                     method="update",
+                     args=[{"visible": [True, False, True, False, True, False, True, False]},
+                           {"title": "<b>Yearly Temperature Trends at Natural Bridges National Monument (NBNM)",
+                            "annotations": []}]),
+                dict(label="Winter Average Temperature",
+                     method="update",
+                     args=[{"visible": [True, True, False, False, False, False, False, False]},
+                           {"title": "<b>Winter Average Temperature Trends at Natural Bridges National Monument (NBNM)",
+                            "annotations": w_annotations}]),
+                dict(label="Winter Minimum Temperature",
+                     method="update",
+                     args=[{"visible": [False, False, True, True, False, False,  False, False]},
+                           {"title": "<b>Winter Minimum Temperature Trends at Natural Bridges National Monument (NBNM)",
+                            "annotations": wmin_annotations}]),
+                dict(label="Summer Average Temperature",
+                     method="update",
+                     args=[{"visible": [False, False, False, False, True, True,False, False]},
+                           {"title": "<b>Summer Average Temperature Trends at Natural Bridges National Monument (NBNM)",
+                            "annotations": s_annotations}]),
+                dict(label="Summer Maxmum Temperature",
+                     method="update",
+                     args=[{"visible": [False, False,  False, False,  False, False, True, True]},
+                           {"title": "<b>Summer Maxmum Temperature Trends at Natural Bridges National Monument (NBNM)",
+                            "annotations": smax_annotations}]),
+            ]),
+        )
+    ])
+     
+# Set title
+fig.update_layout(title_text="<b> Yearly Temperature Trends at Natural Bridges National Monument (NBNM)", title_x=0.5, title_font=dict(size=20, family="Sen", color="#38A7BB"),
+    xaxis_title="<b>Year", 
+    xaxis=dict(title_font=dict(size=15, family="Sen", color="#38A7BB")),
+    yaxis_title="<b>degrees Celsius",
+    yaxis=dict(title_font=dict(size=15, family="Sen", color="#38A7BB")),
+    template="plotly_white",
+    legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=-0.3,
+        xanchor="center",
+        x=0.5,
+        title_font=dict(size=15, family="Sen", color="#38A7BB"),
+        bgcolor="rgba(0,0,0,0)",
+        bordercolor="rgba(0,0,0,0)"
+    ))
+
+fig.show()
+```
+
+# Precipitation
+
+::: {.callout-tip}
+## Chart Navigation Tips
+- **Division Filtering:** Choose one of seven expenditure divisions from the dropdown menu.
+- **Commodity Filtering:** Click commodity names in the legend to filter for specific commodities within a division.
+- **Time Filtering:** Drag across the visualization to filter for a specific time range.
+- **Tooltip:** Hover over the visualization to observe the value for each data point.
+- **Annotations:** Each category's average and maximum expenditure values.
+:::
+
+```{python}
+#| label: fig-plot8
+#| fig-cap: " of Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| warning: false 
+#| echo: false
+#| message: false
+
+# import libraries
+import plotly.graph_objects as go 
+import plotly.io as pio
 
 
 
+```
+
+# select the temperature data
+data2 = round(data.groupby('year')['PPT_Winter'].mean(),2).reset_index()
+data2['PPT_Summer'] = round(data.groupby('year')['PPT_Summer'].mean(),2).reset_index()['PPT_Summer']
+
+# create the line plot
+# Initialize figure
+fig8 = go.Figure()
+
+# Add Traces
+fig8.add_trace(
+    go.Scatter(x=data2.year,
+               y=data2.PPT_Winter,
+               name="Winter Average Temperature",
+               mode='lines+markers',
+               line=dict(color="#33CFA5"),
+               marker=dict(symbol='triangle-down')))
+fig8.add_trace(
+    go.Scatter(x=list(data2.year),
+               y=[data2.PPT_Winter.mean()] * len(data1.index),
+               name="Yearly Average",
+               #visible=False,
+               line=dict(color="#38A7BB", dash="dash")))
+
+fig8.add_trace(
+    go.Scatter(x=data2.year,
+               y=data2.PPT_Summer,
+               name="Summer Average Temperature",
+               mode='lines+markers',
+               line=dict(color="#ff7f0e"),
+               marker=dict(symbol='square')))
+fig8.add_trace(
+    go.Scatter(x=list(data2.year),
+               y=[data2.PPT_Summer.mean()] * len(data1.index),
+               name="Yearly Average",
+               #visible=False,
+               line=dict(color="#38A7BB", dash="dash")))
+
+fig8.show()
+
+# evaporation during summer
+
+::: {.callout-tip}
+## Chart Navigation Tips
+- **Division Filtering:** Choose one of seven expenditure divisions from the dropdown menu.
+- **Commodity Filtering:** Click commodity names in the legend to filter for specific commodities within a division.
+- **Time Filtering:** Drag across the visualization to filter for a specific time range.
+- **Tooltip:** Hover over the visualization to observe the value for each data point.
+- **Annotations:** Each category's average and maximum expenditure values.
+:::
+
+```{python}
+#| label: fig-plot9
+#| fig-cap: " of Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| warning: false 
+#| echo: false
+#| message: false
+
+# import libraries
+
+```
 
 
+# FrostDays_Winter
+
+::: {.callout-tip}
+## Chart Navigation Tips
+- **Division Filtering:** Choose one of seven expenditure divisions from the dropdown menu.
+- **Commodity Filtering:** Click commodity names in the legend to filter for specific commodities within a division.
+- **Time Filtering:** Drag across the visualization to filter for a specific time range.
+- **Tooltip:** Hover over the visualization to observe the value for each data point.
+- **Annotations:** Each category's average and maximum expenditure values.
+:::
+
+```{python}
+#| label: fig-plot10
+#| fig-cap: " of Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| warning: false 
+#| echo: false
+#| message: false
+
+# import libraries
+
+```
+
+
+# soil water availibility
+
+::: {.callout-tip}
+## Chart Navigation Tips
+- **Division Filtering:** Choose one of seven expenditure divisions from the dropdown menu.
+- **Commodity Filtering:** Click commodity names in the legend to filter for specific commodities within a division.
+- **Time Filtering:** Drag across the visualization to filter for a specific time range.
+- **Tooltip:** Hover over the visualization to observe the value for each data point.
+- **Annotations:** Each category's average and maximum expenditure values.
+:::
+
+```{python}
+#| label: fig-plot11
+#| fig-cap: " of Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| warning: false 
+#| echo: false
+#| message: false
+
+# import libraries
+
+```

@@ -35,7 +35,7 @@ const layoutMarginEls = () => {
         top,
         height: marginChild.getBoundingClientRect().height,
         marginTop,
-        total: top + marginChild.getBoundingClientRect().height + marginTop,
+        data1: top + marginChild.getBoundingClientRect().height + marginTop,
       });
       lastBottom = top + marginChild.getBoundingClientRect().height + marginTop;
     }

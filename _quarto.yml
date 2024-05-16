@@ -2,20 +2,28 @@ project:
   type: website
 
 website:
-  title: "climate_change"
+  title: "<b>Climate Change in the Four Corners Region"
+  favicon: images/horst_openscapes_grassland_oak.png
+  back-to-top-navigation: true
+  page-navigation: true
+  reader-mode: true
+
   navbar:
+    title: "<b>Climate Change in the Four Corners Region"
+    logo: images/horst_openscapes_grassland_oak.png
     right:
       - href: index.qmd
         text: Home      
       - href: about.qmd
         text: Analysis
-    #- icon: github
-    #  href: https://github.com/NASA-Openscapes
+      #- icon: github
+      #  href: https://github.com/Yuting-Fan-265/climate_change
     search: true
-    
+    #background: "#FFF6E1"
+
 format:
   html:
-    theme: [sandstone, custom.scss]
+    #theme: [sandstone, custom.scss]
     css: styles.css
     toc: true
     toc-title: Contents
@@ -23,4 +31,7 @@ format:
     link-external-newwindow: true
     date-format: "MMM YYYY"
     smooth-scroll: true
-
+    page-layout: full
+    theme: 
+      - styles.scss
+    mainfont: Sen
