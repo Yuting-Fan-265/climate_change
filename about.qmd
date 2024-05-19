@@ -555,13 +555,70 @@ fig8.show()
 
 ```{python}
 #| label: fig-plot9
-#| fig-cap: " of Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| fig-cap: "Evaporation in Summer at Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
 #| warning: false 
 #| echo: false
 #| message: false
 
-# import libraries
+# select the evaporation data
+data4 = round(data.groupby(['long', 'lat'])['Evap_Summer'].mean(), 2).reset_index()
+data4.rename(columns={'Evap_Summer':'Evap_Summer_Yearly_Average'}, inplace=True)
 
+# set location id
+locat = data[['long','lat']].drop_duplicates().reset_index(drop=True)
+locat['id'] = range(0,len(locat))
+data5 = data.merge(locat, on=['long','lat'], how='left')
+data5 = data5.merge(data4, on=['long','lat'], how='left')
+data5.rename(columns={'year':'Year'}, inplace=True)
+data5['Evap_Summer']=round(data5['Evap_Summer'],2)
+
+# import libraries
+import altair as alt
+
+# create the chart
+selector = alt.selection_point(fields=['id'])
+
+base = alt.Chart(data5).properties(
+    width=400,
+    height=300
+).add_params(selector)
+
+points = base.mark_circle(
+       size=13,
+       color='#38A7BB',
+).encode(
+    longitude='long:Q',
+    latitude='lat:Q',
+    tooltip=['long', 'lat', 'Evap_Summer_Yearly_Average'],
+    color=alt.condition(selector, 'id:O', alt.value('lightgray'), legend=None),
+).properties(
+    title='Yearly Average Summer Evaporation by Location'
+).encode(
+    x=alt.X('long:Q', title='Longitude', scale=alt.Scale(domain=[-110.05, -109.96])),
+    y=alt.Y('lat:Q', title='Latitude', scale=alt.Scale(domain=[37.56, 37.64])),
+)
+
+timeseries = base.mark_line().encode(
+    x='Year',
+    y=alt.Y('Evap_Summer',title='Evaporation in Summer(Centimeters)').scale(domain=(1, 8)),
+    color=alt.Color('id:O').legend(None),
+    tooltip=['Year','Evap_Summer']
+).transform_filter(
+    selector
+).properties(
+    title='Summer Evaporation Over the Years', 
+)
+
+# combine the chart
+chart = (points | timeseries).configure_title(
+    color='#38A7BB', font='Sen', fontSize=19
+).configure_axis(
+    titleFontSize=15,
+    titleFont='Sen',
+    titleColor='#38A7BB',
+)
+
+chart
 ```
 
 
@@ -578,13 +635,69 @@ fig8.show()
 
 ```{python}
 #| label: fig-plot10
-#| fig-cap: " of Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| fig-cap: "Frost Days in Winter at Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
 #| warning: false 
 #| echo: false
 #| message: false
 
-# import libraries
+# select the FrostDays_Winter data
+data6 = round(data.groupby(['long', 'lat'])['FrostDays_Winter'].mean(), 1).reset_index()
+data6.rename(columns={'FrostDays_Winter':'FrostDays_Winter_Yearly_Average'}, inplace=True)
 
+# set location id
+locat = data[['long','lat']].drop_duplicates().reset_index(drop=True)
+locat['id'] = range(0,len(locat))
+data7 = data.merge(locat, on=['long','lat'], how='left')
+data7 = data7.merge(data6, on=['long','lat'], how='left')
+data7.rename(columns={'year':'Year'}, inplace=True)
+
+# import libraries
+import altair as alt
+
+# create the chart
+selector = alt.selection_point(fields=['id'])
+
+base = alt.Chart(data7).properties(
+    width=400,
+    height=300
+).add_params(selector)
+
+points1 = base.mark_circle(
+       size=13,
+       color='#38A7BB',
+).encode(
+    longitude='long:Q',
+    latitude='lat:Q',
+    tooltip=['long', 'lat', 'FrostDays_Winter_Yearly_Average'],
+    color=alt.condition(selector, 'id:O', alt.value('lightgray'), legend=None),
+).properties(
+    title='Yearly Average Frost Days in Winter by Location'
+).encode(
+    x=alt.X('long:Q', title='Longitude', scale=alt.Scale(domain=[-110.05, -109.96])),
+    y=alt.Y('lat:Q', title='Latitude', scale=alt.Scale(domain=[37.56, 37.64])),
+)
+
+timeseries1 = base.mark_line().encode(
+    x='Year',
+    y=alt.Y('FrostDays_Winter',title='Count of Days below -1C in Winter').scale(domain=(55, 92)),
+    color=alt.Color('id:O').legend(None),
+    tooltip=['Year','FrostDays_Winter']
+).transform_filter(
+    selector
+).properties(
+    title='Frost Days in Winter Over the Years', 
+)
+
+# combine the chart
+chart1 = (points1 | timeseries1).configure_title(
+    color='#38A7BB', font='Sen', fontSize=19
+).configure_axis(
+    titleFontSize=15,
+    titleFont='Sen',
+    titleColor='#38A7BB',
+)
+
+chart1
 ```
 
 
