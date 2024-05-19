@@ -89,9 +89,9 @@ data.reset_index(drop=True, inplace=True)
 
 ::: {.callout-tip}
 ## Chart Navigation Tips
-- **Color-Coded Index:** The spectrum of colors on the map indicates the magnitude of change in motor fuel tax collection, with brighter red colors denoting positive changes and brighter blue colors indicating negative changes. 
-- **Size-Coded Index:** The spectrum 
-- **Tooltip:** Hover over any state on the map to see the exact percentage change in motor fuel tax collection for that location.
+- **Color-Coded Index:** The color spectrum on the map represents various percentages of vegetation coverage, with darker colors indicating higher percentages. 
+- **Size-Coded Index:** The size of the points on the map corresponds to different percentages of vegetation coverage, with larger points denoting higher percentages.
+- **Tooltip:** Hover over any point on the map to view the longitude, latitude, and the precise percentage of vegetation coverage for that location.
 :::
 
 ::: {.panel-tabset}
@@ -288,11 +288,11 @@ fig2.show()
 
 ::: {.callout-tip}
 ## Chart Navigation Tips
-- **Division Filtering:** Choose one of seven expenditure divisions from the dropdown menu.
-- **Commodity Filtering:** Click commodity names in the legend to filter for specific commodities within a division.
+- **Division Filtering:** Select one of four temperature types at NBNM from the dropdown menu.
+- **Temperature Type Filtering:** Click on temperature names in the legend to filter specific temperature types within a division.
 - **Time Filtering:** Drag across the visualization to filter for a specific time range.
 - **Tooltip:** Hover over the visualization to observe the value for each data point.
-- **Annotations:** Each category's average and maximum expenditure values.
+- **Annotations:** The dashed line and text represent the average value over the years.
 :::
 
 ```{python}
@@ -328,7 +328,7 @@ fig.add_trace(
 fig.add_trace(
     go.Scatter(x=list(data1.year),
                y=[data1.T_Winter.mean()] * len(data1.index),
-               name="Yearly Average",
+               name="Average Over the Years",
                visible=False,
                line=dict(color="#38A7BB", dash="dash")))
 
@@ -342,7 +342,7 @@ fig.add_trace(
 fig.add_trace(
     go.Scatter(x=list(data1.year),
                y=[data1.Tmin_winter.mean()] * len(data1.index),
-               name="Yearly Average",
+               name="Average Over the Years",
                visible=False,
                line=dict(color="#38A7BB", dash="dash")))
 
@@ -356,7 +356,7 @@ fig.add_trace(
 fig.add_trace(
     go.Scatter(x=list(data1.year),
                y=[data1.T_summer.mean()] * len(data1.index),
-               name="Yearly Average",
+               name="Average Over the Years",
                visible=False,
                line=dict(color="#38A7BB", dash="dash")))
 
@@ -371,7 +371,7 @@ fig.add_trace(
 fig.add_trace(
     go.Scatter(x=list(data1.year),
                y=[data1.Tmax_summer.mean()] * len(data1.index),
-               name="Yearly Average",
+               name="Average Over the Years",
                visible=False,
                line=dict(color="#38A7BB", dash="dash")))
 
@@ -379,22 +379,22 @@ fig.add_trace(
 w_annotations = [dict(x="2000",
                          y=data1.T_Winter.mean(),
                          xref="x", yref="y",
-                         text="Yearly Average:<br> %.2f" % data1.T_Winter.mean(),
+                         text="Average:<br> %.2f" % data1.T_Winter.mean(),
                          ax=0, ay=-120)]
 wmin_annotations = [dict(x="2000",
                          y=data1.Tmin_winter.mean(),
                          xref="x", yref="y",
-                         text="Yearly Average:<br> %.2f" % data1.Tmin_winter.mean(),
+                         text="Average:<br> %.2f" % data1.Tmin_winter.mean(),
                          ax=0, ay=-120)]
 s_annotations = [dict(x="2000",
                          y=data1.T_summer.mean(),
                          xref="x", yref="y",
-                         text="Yearly Average:<br> %.2f" % data1.T_summer.mean(),
+                         text="Average:<br> %.2f" % data1.T_summer.mean(),
                          ax=0, ay=-120)]
 smax_annotations = [dict(x="2000",
                          y=data1.Tmax_summer.mean(),
                          xref="x", yref="y",
-                         text="Yearly Average:<br> %.2f" % data1.Tmax_summer.mean(),
+                         text="Average:<br> %.2f" % data1.Tmax_summer.mean(),
                          ax=0, ay=-120)]
 
 fig.update_layout(
@@ -422,10 +422,10 @@ fig.update_layout(
                      args=[{"visible": [False, False, False, False, True, True,False, False]},
                            {"title": "<b>Summer Average Temperature Trends at Natural Bridges National Monument (NBNM)",
                             "annotations": s_annotations}]),
-                dict(label="Summer Maxmum Temperature",
+                dict(label="Summer Maximum Temperature",
                      method="update",
                      args=[{"visible": [False, False,  False, False,  False, False, True, True]},
-                           {"title": "<b>Summer Maxmum Temperature Trends at Natural Bridges National Monument (NBNM)",
+                           {"title": "<b>Summer Maximum Temperature Trends at Natural Bridges National Monument (NBNM)",
                             "annotations": smax_annotations}]),
             ]),
         )
@@ -456,11 +456,10 @@ fig.show()
 
 ::: {.callout-tip}
 ## Chart Navigation Tips
-- **Division Filtering:** Choose one of seven expenditure divisions from the dropdown menu.
-- **Commodity Filtering:** Click commodity names in the legend to filter for specific commodities within a division.
+- **Precipitation Season Filtering:** Click the legend to filter for specific season's precipitation within a division.
 - **Time Filtering:** Drag across the visualization to filter for a specific time range.
-- **Tooltip:** Hover over the visualization to observe the value for each data point.
-- **Annotations:** Each category's average and maximum expenditure values.
+- **Tooltip:** Hover over the dashed line to observe the total summer and winter precipitation for each year. Hover over the bars to see the specific value for each one. 
+- **Annotations:** The dashed line and text represent the average value over the years. The specific value of each bar.
 :::
 
 ```{python}
@@ -505,7 +504,7 @@ fig8.add_trace(
 fig8.add_trace(
     go.Scatter(x=list(data2.year),
                y=[round(data2.PPT_Total.mean(),2)] * len(data2.index),
-               name="Yearly Average",
+               name="Average(Summer & Winter) Over the Years",
                hovertext=["Total: {:.2f}".format(val) for val in data2.PPT_Total],
                line=dict(color="#38A7BB", dash="dash")))
 
@@ -546,11 +545,8 @@ fig8.show()
 
 ::: {.callout-tip}
 ## Chart Navigation Tips
-- **Division Filtering:** Choose one of seven expenditure divisions from the dropdown menu.
-- **Commodity Filtering:** Click commodity names in the legend to filter for specific commodities within a division.
-- **Time Filtering:** Drag across the visualization to filter for a specific time range.
+- **Location Filtering:** Click on a point in the left plot to filter for a specific location in NBNM and observe the summer evaporation at that location over the years in the right plot.
 - **Tooltip:** Hover over the visualization to observe the value for each data point.
-- **Annotations:** Each category's average and maximum expenditure values.
 :::
 
 ```{python}
@@ -562,7 +558,7 @@ fig8.show()
 
 # select the evaporation data
 data4 = round(data.groupby(['long', 'lat'])['Evap_Summer'].mean(), 2).reset_index()
-data4.rename(columns={'Evap_Summer':'Evap_Summer_Yearly_Average'}, inplace=True)
+data4.rename(columns={'Evap_Summer':'Average_Evap_Summer_Yearly'}, inplace=True)
 
 # set location id
 locat = data[['long','lat']].drop_duplicates().reset_index(drop=True)
@@ -589,10 +585,10 @@ points = base.mark_circle(
 ).encode(
     longitude='long:Q',
     latitude='lat:Q',
-    tooltip=['long', 'lat', 'Evap_Summer_Yearly_Average'],
+    tooltip=['long', 'lat', 'Average_Evap_Summer_Yearly'],
     color=alt.condition(selector, 'id:O', alt.value('lightgray'), legend=None),
 ).properties(
-    title='Yearly Average Summer Evaporation by Location'
+    title='Average Summer Evaporation by Location Over the Years'
 ).encode(
     x=alt.X('long:Q', title='Longitude', scale=alt.Scale(domain=[-110.05, -109.96])),
     y=alt.Y('lat:Q', title='Latitude', scale=alt.Scale(domain=[37.56, 37.64])),
@@ -626,11 +622,8 @@ chart
 
 ::: {.callout-tip}
 ## Chart Navigation Tips
-- **Division Filtering:** Choose one of seven expenditure divisions from the dropdown menu.
-- **Commodity Filtering:** Click commodity names in the legend to filter for specific commodities within a division.
-- **Time Filtering:** Drag across the visualization to filter for a specific time range.
+- **Location Filtering:** Click on a point in the left plot to filter for a specific location in NBNM and observe the frost days in winter at that location over the years in the right plot.
 - **Tooltip:** Hover over the visualization to observe the value for each data point.
-- **Annotations:** Each category's average and maximum expenditure values.
 :::
 
 ```{python}
@@ -642,7 +635,7 @@ chart
 
 # select the FrostDays_Winter data
 data6 = round(data.groupby(['long', 'lat'])['FrostDays_Winter'].mean(), 1).reset_index()
-data6.rename(columns={'FrostDays_Winter':'FrostDays_Winter_Yearly_Average'}, inplace=True)
+data6.rename(columns={'FrostDays_Winter':'Average_FrostDays_Winter_Yearly'}, inplace=True)
 
 # set location id
 locat = data[['long','lat']].drop_duplicates().reset_index(drop=True)
@@ -668,10 +661,10 @@ points1 = base.mark_circle(
 ).encode(
     longitude='long:Q',
     latitude='lat:Q',
-    tooltip=['long', 'lat', 'FrostDays_Winter_Yearly_Average'],
+    tooltip=['long', 'lat', 'Average_FrostDays_Winter_Yearly'],
     color=alt.condition(selector, 'id:O', alt.value('lightgray'), legend=None),
 ).properties(
-    title='Yearly Average Frost Days in Winter by Location'
+    title='Average Frost Days in Winter by Location Over the Years'
 ).encode(
     x=alt.X('long:Q', title='Longitude', scale=alt.Scale(domain=[-110.05, -109.96])),
     y=alt.Y('lat:Q', title='Latitude', scale=alt.Scale(domain=[37.56, 37.64])),
@@ -705,26 +698,19 @@ chart1
 
 ::: {.callout-tip}
 ## Chart Navigation Tips
-- **Division Filtering:** Choose one of seven expenditure divisions from the dropdown menu.
-- **Commodity Filtering:** Click commodity names in the legend to filter for specific commodities within a division.
-- **Time Filtering:** Drag across the visualization to filter for a specific time range.
+- **Time Filtering:** Select the time frame on the left plot to filter for a specific year. Drag across the visualization on the right plot to filter for a specific time range.
 - **Tooltip:** Hover over the visualization to observe the value for each data point.
-- **Annotations:** Each category's average and maximum expenditure values.
+- **Annotations:** Display the specific values for each category on the left plot.
 :::
 
 :::: {.columns}
-::: {.column width="60%"}
+::: {.column width="50%"}
 ```{python}
 #| label: fig-plot11
 #| fig-cap: "Volumetric Water Content at Natural Bridges National Monument (NBNM) <br> Data Source: US Geological Survey (USGS)"  
 #| warning: false 
 #| echo: false
 #| message: false
-
-# import libraries
-import plotly.graph_objects as go 
-import plotly.io as pio
-import plotly.express as px
 
 # select the VWC data
 data3 = round(data.groupby('year')['VWC_Spring_whole'].mean(),2).reset_index()
@@ -733,6 +719,11 @@ data3['Fall'] = round(data.groupby('year')['VWC_Fall_whole'].mean(),2).reset_ind
 data3['Winter'] = round(data.groupby('year')['VWC_Winter_whole'].mean(),2).reset_index()['VWC_Winter_whole']
 data3.rename(columns={'VWC_Spring_whole':'Spring', 'year':'Year'}, inplace=True)
 data3_long = data3.melt(id_vars='Year', var_name='Season', value_name='Value')
+
+# import libraries
+import plotly.graph_objects as go 
+import plotly.io as pio
+import plotly.express as px
 
 # create the radar plot
 fig9 = px.line_polar(data3_long, r='Value', theta='Season', line_close=True, text = 'Value', color_discrete_sequence = ['#38A7BB'], animation_frame="Year")
@@ -747,7 +738,7 @@ fig9.show()
 
 :::
 
-::: {.column width="40%"}
+::: {.column width="50%"}
 ```{python}
 #| warning: false 
 #| echo: false
@@ -776,4 +767,6 @@ fig10.show()
 ```
 
 :::
+
+
 ::::
