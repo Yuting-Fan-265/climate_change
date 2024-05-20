@@ -56,6 +56,7 @@ his = pd.merge(his_a, his_b, on=['long', 'lat', 'year', 'TimePeriod', 'RCP', 'sc
 # load the data
 nt = pd.read_csv("../Data Set/nearterm_data_2020-2024.csv")
 nt = nt[nt['scenario']=='sc22']
+nt = nt[nt['year']!=2024]
 
 # select the nearterm data
 nt_a = nt[['long', 'lat', 'year', 'TimePeriod', 'RCP', 'scenario', 'treecanopy',
@@ -85,9 +86,6 @@ data.reset_index(drop=True, inplace=True)
 
 ```
 
-::: {.callout-note appearance="simple"}
-If the charts are not visible, please try refreshing the website.
-:::
 
 `Climate change` is no longer a future threat. We are presently witnessing its effects in the `Four Corners Region` through modifications to the water and vegetation resources. Because anticipated increases in precipitation will probably be countered by **warming temperatures** that will increase evaporation rates, the Four Corners Region is expected to become **drier and warmer** in the future. The distribution of plants and animals in parks will shift due to climate change, which will alter ecosystem functions. Climate change has an impact on all of the vital indications associated with natural resources in the Four Corners Region.
 
@@ -294,7 +292,7 @@ fig2.show()
 
 :::
 
-Nearly **two-thirds** of the locations in Natural Bridges National Monument have **over 50% bare ground coverage**, with some areas reaching as high as **90%**. The most severe problem is in the edge area on the upper left side of the park. Other types of vegetation cover include tree canopy, plant litter, shrubs, herbaceous plants, and annual herbaceous plants. Tree canopy and plant litter coverage are primarily concentrated in the top right of the park, with coverage up to around 25%. The distribution of shrubs and herbaceous plants is relatively even, mainly around the park’s edge areas, with coverage of about 15%.
+Nearly **two-thirds** of the locations in Natural Bridges National Monument have **over 50% bare ground coverage**, with some areas reaching as high as **90%**. The most severe problem is in the edge area on the upper left side of the monument. Other types of vegetation cover include tree canopy, plant litter, shrubs, herbaceous plants, and annual herbaceous plants. Tree canopy and plant litter coverage are primarily concentrated in the top right of the monument, with coverage up to around 25%. The distribution of shrubs and herbaceous plants is relatively even, mainly around the park’s edge areas, with coverage of about 15%.
 
 The vegetation coverage at Natural Bridges National Monument indicates that **climate change significantly impacts vegetation resilience**. This issue demands serious attention and immediate action to protect the ecological environment. It is crucial to develop vegetation protection plans and programs that address the challenges posed by climate change.
 
@@ -483,9 +481,9 @@ fig.update_layout(title_text="<b> Yearly Temperature Trends at Natural Bridges N
 fig.show()
 ```
 
-At Natural Bridges National Monument, the average winter temperature has **consistently increased** since 2016, rising above 0 degrees Celsius and exceeding the 43-year average. The minimum winter temperature also saw a significant increase starting in 2010, rising from -25 degrees Celsius to a peak of -8.17 degrees Celsius in 2022.
+At Natural Bridges National Monument, the average winter temperature has **consistently increased** since 2016, rising above 0 degrees Celsius and exceeding the 42-year average. The minimum winter temperature also saw a significant increase starting in 2010, rising from -25 degrees Celsius to a peak of -8.17 degrees Celsius in 2022.
 
-A similar trend is observed in the summer. The average summer temperature has steadily increased since 2014, reaching a record high of 24.53 degrees Celsius in 2022, the highest in 43 years. Additionally, the maximum summer temperature has not dropped below 35 degrees Celsius since 2009. From 2021 to 2024, nearly all temperature types have been **above the 43-year average**.
+A similar trend is observed in the summer. The average summer temperature has steadily increased since 2014, reaching a record high of 24.53 degrees Celsius in 2022, the highest in 42 years. Additionally, the maximum summer temperature has not dropped below 35 degrees Celsius since 2009. From 2021 to 2023, all temperature types have been **above the 42-year average**.
 
 ## Decreasing Frost Days in Winter
 
@@ -652,7 +650,7 @@ fig8.show()
 
 ```
 
-At Natural Bridges National Monument, the precipitation trend is **decreasing**. Since 2018, total precipitation in both summer and winter has consistently been **below the 43-year average**, failing to reach even 10 centimeters in 2021 and 2022. *The combination of higher temperatures and lower precipitation is causing significant water stress for the Monument*.
+At Natural Bridges National Monument, the precipitation trend is **decreasing**. Since 2018, total precipitation in both summer and winter has consistently been **below the 42-year average**, failing to reach even 10 centimeters in 2021 and 2022. *The combination of higher temperatures and lower precipitation is causing significant water stress for the Monument*.
 
 # Water Balance at Natural Bridges National Monument
 
@@ -745,7 +743,7 @@ chart = (points | timeseries).configure_title(
 chart
 ```
 
-While summer evaporation levels at Natural Bridges National Monument may appear average overall, there has been an increasing trend since 2018, with a dramatic rise observed from 2023 to 2024. This trend correlates with the **increase in summer temperatures**. This indicates that, despite consistent precipitation levels, the amount of available water is decreasing. Consequently, the water available for plants and animals is also being reduced.
+While summer evaporation levels at Natural Bridges National Monument may appear average overall, there has been an increasing trend since 2018. This trend correlates with the **increase in summer temperatures**. This indicates that, despite consistent precipitation levels, the amount of available water is decreasing. Consequently, the water available for plants and animals is also being reduced.
 
 
 ## Volumetric Water Content
@@ -823,7 +821,7 @@ fig9.show()
 :::
 ::::
 
-At Natural Bridges National Monument, the overall trend of yearly volumetric water content is **decreasing**. Typically, the volumetric water content is higher in winter and lower in summer. Although there was a rebound in 2024, the volumetric water content nearly reached its lowest point in over 43 years in 2022 and 2023. The amount of water available to plants is greatly threatened, highlighting the impact of climate change on the region. It is crucial to address this issue by developing plant protection plans and implementing appropriate measures.
+At Natural Bridges National Monument, the overall trend of yearly volumetric water content is **decreasing**. Typically, the volumetric water content is higher in winter and lower in summer. The volumetric water content nearly reached its lowest point in over 42 years in 2022 and 2023. The amount of water available to plants is greatly threatened, highlighting the impact of climate change on the region. It is crucial to address this issue by developing plant protection plans and implementing appropriate measures.
 
 # Conclusion
 
