@@ -16,8 +16,8 @@ website:
         text: Home      
       - href: about.qmd
         text: Analysis
-      #- icon: github
-      #  href: https://github.com/Yuting-Fan-265/climate_change
+      - icon: github
+        href: https://github.com/Yuting-Fan-265/climate_change
     search: true
     #background: "#FFF6E1"
 

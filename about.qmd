@@ -1,5 +1,5 @@
 ---
-title: "About"
+title: "Increasing Aridification and Drought Stress: The Most Significant Resource Issues Facing Natural Bridges National Monument"
 date: "May, 2024"
 format:
     html: 
@@ -14,8 +14,8 @@ editor_options:
   chunk_output_type: console
 execute: 
   echo: fenced
-reference-location: margin
-citation-location: margin
+#reference-location: margin
+#citation-location: margin
 ---
 
 ```{python}
@@ -85,12 +85,22 @@ data.reset_index(drop=True, inplace=True)
 
 ```
 
-# Vegetation Resilience
+::: {.callout-note appearance="simple"}
+If the charts are not visible, please try refreshing the website.
+:::
+
+`Climate change` is no longer a future threat. We are presently witnessing its effects in the `Four Corners Region` through modifications to the water and vegetation resources. Because anticipated increases in precipitation will probably be countered by **warming temperatures** that will increase evaporation rates, the Four Corners Region is expected to become **drier and warmer** in the future. The distribution of plants and animals in parks will shift due to climate change, which will alter ecosystem functions. Climate change has an impact on all of the vital indications associated with natural resources in the Four Corners Region.
+
+`Natural Bridges National Monument` is a U.S. National Monument located about 50 miles (80 km) northwest of the Four Corners boundary of southeast Utah, in the western United States.[^my_note] According to data from the US Geological Survey (USGS), we can observe specific **climate change impacts** at the Natural Bridges National Monument.
+
+![](images/nbnm.png)
+
+# Bare Ground Dominates the Landscape at Natural Bridges National Monument
 
 ::: {.callout-tip}
 ## Chart Navigation Tips
-- **Color-Coded Index:** The color spectrum on the map represents various percentages of vegetation coverage, with darker colors indicating higher percentages. 
-- **Size-Coded Index:** The size of the points on the map corresponds to different percentages of vegetation coverage, with larger points denoting higher percentages.
+- **Color-Coded Index:** The color spectrum on the map represents various percentages of vegetation coverage, with **darker** colors indicating higher percentages. 
+- **Size-Coded Index:** The size of the points on the map corresponds to different percentages of vegetation coverage, with **larger** points denoting higher percentages.
 - **Tooltip:** Hover over any point on the map to view the longitude, latitude, and the precise percentage of vegetation coverage for that location.
 :::
 
@@ -284,7 +294,28 @@ fig2.show()
 
 :::
 
-# Temperatrue
+Nearly **two-thirds** of the locations in Natural Bridges National Monument have **over 50% bare ground coverage**, with some areas reaching as high as **90%**. The most severe problem is in the edge area on the upper left side of the park. Other types of vegetation cover include tree canopy, plant litter, shrubs, herbaceous plants, and annual herbaceous plants. Tree canopy and plant litter coverage are primarily concentrated in the top right of the park, with coverage up to around 25%. The distribution of shrubs and herbaceous plants is relatively even, mainly around the park’s edge areas, with coverage of about 15%.
+
+The vegetation coverage at Natural Bridges National Monument indicates that **climate change significantly impacts vegetation resilience**. This issue demands serious attention and immediate action to protect the ecological environment. It is crucial to develop vegetation protection plans and programs that address the challenges posed by climate change.
+
+
+# Significant Drought Stress at Natural Bridges National Monument
+
+:::: {.columns}
+::: {.column width="50%"}
+![](images/water_deficit.webp)
+:::
+::: {.column width="5%"}
+\
+:::
+::: {.column width="45%"}
+\
+
+The primary cause of the extensive bare ground at Natural Bridges National Monument is drought. `Water deficit` is a key indicator of `drought stress`. Traditionally, drought was considered to be a period of below-average precipitation. However, with rising temperatures, evaporation rates also increase. When **above-average temperatures** coincide with **below-average precipitation**, it leads to extreme water stress.[^my_note1]
+:::
+::::
+
+## Above-Average Temperatures
 
 ::: {.callout-tip}
 ## Chart Navigation Tips
@@ -452,7 +483,89 @@ fig.update_layout(title_text="<b> Yearly Temperature Trends at Natural Bridges N
 fig.show()
 ```
 
-# Precipitation
+At Natural Bridges National Monument, the average winter temperature has **consistently increased** since 2016, rising above 0 degrees Celsius and exceeding the 43-year average. The minimum winter temperature also saw a significant increase starting in 2010, rising from -25 degrees Celsius to a peak of -8.17 degrees Celsius in 2022.
+
+A similar trend is observed in the summer. The average summer temperature has steadily increased since 2014, reaching a record high of 24.53 degrees Celsius in 2022, the highest in 43 years. Additionally, the maximum summer temperature has not dropped below 35 degrees Celsius since 2009. From 2021 to 2024, nearly all temperature types have been **above the 43-year average**.
+
+## Decreasing Frost Days in Winter
+
+::: {.callout-tip}
+## Chart Navigation Tips
+- **Location Filtering:** Click on a point in the left plot to filter for a specific location in NBNM and observe the frost days in winter at that location over the years in the right plot.
+- **Tooltip:** Hover over the visualization to observe the value for each data point.
+:::
+
+```{python}
+#| label: fig-plot10
+#| fig-cap: "Frost Days in Winter at Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| warning: false 
+#| echo: false
+#| message: false
+
+# select the FrostDays_Winter data
+data6 = round(data.groupby(['long', 'lat'])['FrostDays_Winter'].mean(), 1).reset_index()
+data6.rename(columns={'FrostDays_Winter':'Average_FrostDays_Winter_Yearly'}, inplace=True)
+
+# set location id
+locat = data[['long','lat']].drop_duplicates().reset_index(drop=True)
+locat['id'] = range(0,len(locat))
+data7 = data.merge(locat, on=['long','lat'], how='left')
+data7 = data7.merge(data6, on=['long','lat'], how='left')
+data7.rename(columns={'year':'Year'}, inplace=True)
+
+# import libraries
+import altair as alt
+
+# create the chart
+selector = alt.selection_point(fields=['id'])
+
+base = alt.Chart(data7).properties(
+    width=400,
+    height=300
+).add_params(selector)
+
+points1 = base.mark_circle(
+       size=13,
+       color='#38A7BB',
+).encode(
+    longitude='long:Q',
+    latitude='lat:Q',
+    tooltip=['long', 'lat', 'Average_FrostDays_Winter_Yearly'],
+    color=alt.condition(selector, 'id:O', alt.value('lightgray'), legend=None),
+).properties(
+    title='Average Frost Days in Winter by Location Over the Years'
+).encode(
+    x=alt.X('long:Q', title='Longitude', scale=alt.Scale(domain=[-110.05, -109.96])),
+    y=alt.Y('lat:Q', title='Latitude', scale=alt.Scale(domain=[37.56, 37.64])),
+)
+
+timeseries1 = base.mark_line().encode(
+    x=alt.X('Year:Q', title='Year', axis=alt.Axis(format='d')),
+    y=alt.Y('FrostDays_Winter',title='Count of Days below -1C in Winter').scale(domain=(55, 92)),
+    color=alt.Color('id:O').legend(None),
+    tooltip=['Year:Q','FrostDays_Winter']
+).transform_filter(
+    selector
+).properties(
+    title='Frost Days in Winter Over the Years', 
+)
+
+# combine the chart
+chart1 = (points1 | timeseries1).configure_title(
+    color='#38A7BB', font='Sen', fontSize=19
+).configure_axis(
+    titleFontSize=15,
+    titleFont='Sen',
+    titleColor='#38A7BB',
+)
+
+chart1
+```
+
+At Natural Bridges National Monument, the number of frost days in winter experienced a **dramatic drop** from 2012 to 2013, decreasing from a peak of 91 days to a low of 56 days. This trend has continued to decline over time, reflecting the overall **increase in winter temperatures** at the monument.
+
+
+## Below-Average Precipitation
 
 ::: {.callout-tip}
 ## Chart Navigation Tips
@@ -539,9 +652,24 @@ fig8.show()
 
 ```
 
+At Natural Bridges National Monument, the precipitation trend is **decreasing**. Since 2018, total precipitation in both summer and winter has consistently been **below the 43-year average**, failing to reach even 10 centimeters in 2021 and 2022. *The combination of higher temperatures and lower precipitation is causing significant water stress for the Monument*.
+
+# Water Balance at Natural Bridges National Monument
+
+:::: {.columns}
+::: {.column width="50%"}
+![](images/water_balance.jpeg)
+:::
+::: {.column width="5%"}
+\
+:::
+::: {.column width="45%"}
+Plants absorb water from the soil through their roots; they do not "drink" rain. Therefore, it's crucial to ascertain how much of the water falling from the sky is genuinely accessible to plants at any one time, rather than merely documenting the total amount. Monitoring the movement of precipitation in its many forms—liquid, solid, and gas—has helped us better understand how vegetation responds to weather and climate patterns. As a result, we are now far better equipped to comprehend the potential effects of climate change on park vegetation and animals.[^my_note2]
+:::
+::::
 
 
-# evaporation during summer
+## Summer Evaporation
 
 ::: {.callout-tip}
 ## Chart Navigation Tips
@@ -595,7 +723,7 @@ points = base.mark_circle(
 )
 
 timeseries = base.mark_line().encode(
-    x='Year',
+    x=alt.X('Year:Q', title='Year', axis=alt.Axis(format='d')),
     y=alt.Y('Evap_Summer',title='Evaporation in Summer(Centimeters)').scale(domain=(1, 8)),
     color=alt.Color('id:O').legend(None),
     tooltip=['Year','Evap_Summer']
@@ -617,97 +745,23 @@ chart = (points | timeseries).configure_title(
 chart
 ```
 
-
-# FrostDays_Winter
-
-::: {.callout-tip}
-## Chart Navigation Tips
-- **Location Filtering:** Click on a point in the left plot to filter for a specific location in NBNM and observe the frost days in winter at that location over the years in the right plot.
-- **Tooltip:** Hover over the visualization to observe the value for each data point.
-:::
-
-```{python}
-#| label: fig-plot10
-#| fig-cap: "Frost Days in Winter at Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
-#| warning: false 
-#| echo: false
-#| message: false
-
-# select the FrostDays_Winter data
-data6 = round(data.groupby(['long', 'lat'])['FrostDays_Winter'].mean(), 1).reset_index()
-data6.rename(columns={'FrostDays_Winter':'Average_FrostDays_Winter_Yearly'}, inplace=True)
-
-# set location id
-locat = data[['long','lat']].drop_duplicates().reset_index(drop=True)
-locat['id'] = range(0,len(locat))
-data7 = data.merge(locat, on=['long','lat'], how='left')
-data7 = data7.merge(data6, on=['long','lat'], how='left')
-data7.rename(columns={'year':'Year'}, inplace=True)
-
-# import libraries
-import altair as alt
-
-# create the chart
-selector = alt.selection_point(fields=['id'])
-
-base = alt.Chart(data7).properties(
-    width=400,
-    height=300
-).add_params(selector)
-
-points1 = base.mark_circle(
-       size=13,
-       color='#38A7BB',
-).encode(
-    longitude='long:Q',
-    latitude='lat:Q',
-    tooltip=['long', 'lat', 'Average_FrostDays_Winter_Yearly'],
-    color=alt.condition(selector, 'id:O', alt.value('lightgray'), legend=None),
-).properties(
-    title='Average Frost Days in Winter by Location Over the Years'
-).encode(
-    x=alt.X('long:Q', title='Longitude', scale=alt.Scale(domain=[-110.05, -109.96])),
-    y=alt.Y('lat:Q', title='Latitude', scale=alt.Scale(domain=[37.56, 37.64])),
-)
-
-timeseries1 = base.mark_line().encode(
-    x='Year',
-    y=alt.Y('FrostDays_Winter',title='Count of Days below -1C in Winter').scale(domain=(55, 92)),
-    color=alt.Color('id:O').legend(None),
-    tooltip=['Year','FrostDays_Winter']
-).transform_filter(
-    selector
-).properties(
-    title='Frost Days in Winter Over the Years', 
-)
-
-# combine the chart
-chart1 = (points1 | timeseries1).configure_title(
-    color='#38A7BB', font='Sen', fontSize=19
-).configure_axis(
-    titleFontSize=15,
-    titleFont='Sen',
-    titleColor='#38A7BB',
-)
-
-chart1
-```
+While summer evaporation levels at Natural Bridges National Monument may appear average overall, there has been an increasing trend since 2018, with a dramatic rise observed from 2023 to 2024. This trend correlates with the **increase in summer temperatures**. This indicates that, despite consistent precipitation levels, the amount of available water is decreasing. Consequently, the water available for plants and animals is also being reduced.
 
 
-# volumetric water content
+## Volumetric Water Content
 
 ::: {.callout-tip}
 ## Chart Navigation Tips
-- **Time Filtering:** Select the time frame on the left plot to filter for a specific year. Drag across the visualization on the right plot to filter for a specific time range.
+- **Time Filtering:** Select the time frame on the right plot to filter for a specific year. Drag across the visualization on the left plot to filter for a specific time range.
 - **Tooltip:** Hover over the visualization to observe the value for each data point.
-- **Annotations:** Display the specific values for each category on the left plot.
+- **Annotations:** Display the specific values for each category on the right plot.
 :::
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="60%"}
 ```{python}
 #| label: fig-plot11
-#| fig-cap: "Volumetric Water Content at Natural Bridges National Monument (NBNM) <br> Data Source: US Geological Survey (USGS)"  
+#| fig-cap: "Volumetric Water Content at Natural Bridges National Monument(NBNM) <br> Data Source: US Geological Survey (USGS)"  
 #| warning: false 
 #| echo: false
 #| message: false
@@ -724,25 +778,6 @@ data3_long = data3.melt(id_vars='Year', var_name='Season', value_name='Value')
 import plotly.graph_objects as go 
 import plotly.io as pio
 import plotly.express as px
-
-# create the radar plot
-fig9 = px.line_polar(data3_long, r='Value', theta='Season', line_close=True, text = 'Value', color_discrete_sequence = ['#38A7BB'], animation_frame="Year")
-fig9.update_traces(fill='toself')
-
-# set title and layout
-fig9.update_layout(title_text="<b> Seasonal VMC at NBNM", title_x=0.5, title_font=dict(size=20, family="Sen", color="#38A7BB"),
-    template="plotly_white")
-
-fig9.show()
-```
-
-:::
-
-::: {.column width="50%"}
-```{python}
-#| warning: false 
-#| echo: false
-#| message: false
 
 data3['VWC_Total'] = [sum(row) for row in zip(data3['Spring'],data3['Summer'],data3['Winter'],data3['Fall'])]
 
@@ -768,5 +803,41 @@ fig10.show()
 
 :::
 
+::: {.column width="40%"}
+```{python}
+#| warning: false 
+#| echo: false
+#| message: false
 
+# create the radar plot
+fig9 = px.line_polar(data3_long, r='Value', theta='Season', line_close=True, text = 'Value', color_discrete_sequence = ['#38A7BB'], animation_frame="Year")
+fig9.update_traces(fill='toself')
+
+# set title and layout
+fig9.update_layout(title_text="<b> Seasonal VMC at NBNM", title_x=0.5, title_font=dict(size=20, family="Sen", color="#38A7BB"),
+    template="plotly_white")
+
+fig9.show()
+```
+
+:::
 ::::
+
+At Natural Bridges National Monument, the overall trend of yearly volumetric water content is **decreasing**. Typically, the volumetric water content is higher in winter and lower in summer. Although there was a rebound in 2024, the volumetric water content nearly reached its lowest point in over 43 years in 2022 and 2023. The amount of water available to plants is greatly threatened, highlighting the impact of climate change on the region. It is crucial to address this issue by developing plant protection plans and implementing appropriate measures.
+
+# Conclusion
+
+The Natural Bridges National Monument is facing significant challenges due to climate change-induced aridification and drought stress. Increasing temperatures, decreasing precipitation, and declining water content are urgent issues that need to be addressed to protect the ecological integrity of the Monument. They threaten the resilience of its vegetation and wildlife. If action is not taken, these tendencies will only get worse and make it more difficult to preserve this precious natural resource.
+
+Immediate action is necessary to safeguard the ecological integrity of Natural Bridges National Monument. This entails creating thorough plans for vegetation protection in order to handle the unique problems that climate change presents. These plans should prioritize the conservation and restoration of native vegetation, as well as measures to mitigate soil erosion and promote ecosystem resilience.
+
+Water conservation measures must be implemented within the monument due to the increasing water stress induced by decreasing precipitation and rising temperatures. This entails putting in place irrigation systems that consume less water, encouraging plant species that can withstand drought, and creating water management plans to maximize resource utilization.
+
+Raising public knowledge of how climate change is affecting Natural Bridges National Monument is crucial. Educational programs, interpretive materials, and outreach campaigns can help engage visitors and local communities in efforts to protect this unique ecosystem.
+
+Recognizing the importance of these challenges and working together to implement sustainable solutions will ensure the long-term resilience and vitality of this treasured natural landscape.
+
+
+[^my_note]: Wikipedia contributors, "Natural Bridges National Monument," Wikipedia, The Free Encyclopedia, https://en.wikipedia.org/w/index.php?title=Natural_Bridges_National_Monument&oldid=1219301057 (accessed May 20, 2024).
+[^my_note1]: National Park Service. "Localized Drought Impacts on Northern Colorado Plateau Landbirds." U.S. Department of the Interior. Last modified May 9, 2024. https://www.nps.gov/articles/000/ncpn_birds-and-drought.htm.
+[^my_note2]: National Park Service. "Climate Change." Northern Colorado Plateau Inventory & Monitoring Network. Last updated April 13, 2023. Accessed May 20, 2024. https://www.nps.gov/im/ncpn/climate.htm.
